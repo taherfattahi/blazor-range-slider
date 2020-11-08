@@ -1,0 +1,105 @@
+﻿@page "/"
+@namespace BlazorRangeSlider.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlazorRangeSlider</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+
+    <link href="css/ion.rangeSlider.css" rel="stylesheet" />
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/ion.rangeSlider.js"></script>
+
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>
+
+
+    <script>
+
+        let isTrackChange = true;
+        let d9_instance;
+
+        window.initJsFunctionsFromCsharp = () => {
+
+            var $d9 = $("#ionRangeSlider");
+            $d9.ionRangeSlider({
+                skin: "sharp",
+                grid: true,
+                min: 0,
+                max: 1,
+                from: 0,
+                step: 0.001,
+                hide_from_to: false,
+                hide_min_max: true,
+                onStart: function (data) {
+                    console.log(data.input);        // jQuery-link to input
+                    console.log(data.slider);       // jQuery-link to range sliders container
+                    console.log(data.min);          // MIN value
+                    console.log(data.max);          // MAX values
+                    console.log(data.from);         // FROM value
+                    console.log(data.from_percent); // FROM value in percent
+                    console.log(data.from_value);   // FROM index in values array (if used)
+                    console.log(data.to);           // TO value
+                    console.log(data.to_percent);   // TO value in percent
+                    console.log(data.to_value);     // TO index in values array (if used)
+                    console.log(data.min_pretty);   // MIN prettified (if used)
+                    console.log(data.max_pretty);   // MAX prettified (if used)
+                    console.log(data.from_pretty);  // FROM prettified (if used)
+                    console.log(data.to_pretty);    // TO prettified (if used)
+                },
+                onChange: function (data) {
+                    // Called every time handle position is changed
+
+                    console.log(data.from);
+                    DotNet.invokeMethodAsync('BlazorRangeSlider', 'onChange', data.from.toString());
+
+                },
+
+                onFinish: function (data) {
+                    // Called then action is done and mouse is released
+
+                    console.log(data.to);
+                },
+
+                onUpdate: function (data) {
+                    // Called then slider is changed using Update public method
+
+                    console.log(data.from_percent);
+                }
+
+            });
+
+            d9_instance = $d9.data("ionRangeSlider");
+        }
+
+    </script>
+
+
+</body>
+</html>
