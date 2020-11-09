@@ -17,6 +17,9 @@ namespace BlazorRangeSlider.Pages
         [Inject]
         ILogger<Index> logger { get; set; }
 
+
+        public  int index = 3;
+
         public static Index IndexInstance;
 
         protected override async Task OnInitializedAsync()
@@ -26,8 +29,14 @@ namespace BlazorRangeSlider.Pages
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await js.InvokeVoidAsync("initJsFunctionsFromCsharp");
+            await js.InvokeVoidAsync("initJsFunctionsMarksFromCsharp");
         }
 
+        public async void onClickBtn() {
+
+            await js.InvokeVoidAsync("addLineToTrackbarFromCsharp", index);
+            index++;
+        }
         [JSInvokable]
         public async static void onStart(string data)
         {

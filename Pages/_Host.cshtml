@@ -1,9 +1,13 @@
 ﻿@page "/"
 @namespace BlazorRangeSlider.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<<<<<<< HEAD
 @{
     Layout = null;
 }
+=======
+@{ Layout = null; }
+>>>>>>> 09fa65ae971eb1177dbb6fb0f28130d16ee8ee39
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,6 +48,16 @@
 
         let isTrackChange = true;
         let d9_instance;
+
+        let d8_instance;
+
+        var mySlider;
+
+        var min = 0;
+        var max = 1000;
+        var marks = [100, 200];
+        var marksName = ["step1", "step2"];
+
 
         window.initJsFunctionsFromCsharp = () => {
 
@@ -98,6 +112,91 @@
             d9_instance = $d9.data("ionRangeSlider");
         }
 
+
+        window.initJsFunctionsMarksFromCsharp = () => {
+
+            var $d8 = $("#ionRangeSliderMarks");
+            $d8.ionRangeSlider({
+                skin: "round",
+                grid: true,
+                min: 0,
+                max: 1000,
+                from: 0,
+                step: 1, 
+                hide_from_to: false,
+                hide_min_max: true,
+                onStart: function (data) {
+                    console.log(data.input);        // jQuery-link to input
+                    console.log(data.slider);       // jQuery-link to range sliders container
+                    console.log(data.min);          // MIN value
+                    console.log(data.max);          // MAX values
+                    console.log(data.from);         // FROM value
+                    console.log(data.from_percent); // FROM value in percent
+                    console.log(data.from_value);   // FROM index in values array (if used)
+                    console.log(data.to);           // TO value
+                    console.log(data.to_percent);   // TO value in percent
+                    console.log(data.to_value);     // TO index in values array (if used)
+                    console.log(data.min_pretty);   // MIN prettified (if used)
+                    console.log(data.max_pretty);   // MAX prettified (if used)
+                    console.log(data.from_pretty);  // FROM prettified (if used)
+                    console.log(data.to_pretty);    // TO prettified (if used)
+                    addMarks(data.slider);
+                    mySlider = data;
+                },
+                onChange: function (data) {
+                    // Called every time handle position is changed
+
+                    console.log(data.from);
+                    DotNet.invokeMethodAsync('BlazorRangeSlider', 'onChange', data.from.toString());
+
+                },
+
+                onFinish: function (data) {
+                    // Called then action is done and mouse is released
+
+                    console.log(data.to);
+                },
+
+                onUpdate: function (data) {
+                    // Called then slider is changed using Update public method
+
+                    console.log(data.from_percent);
+                }
+
+            });
+
+            d8_instance = $d8.data("ionRangeSlider");
+        }
+
+        function convertToPercent(num) {
+            return (num - min) / (max - min) * 100;
+        }
+
+        function addMarks($slider) {
+            var html = '';
+            var left = 0;
+            var left_p = "";
+            var i;
+
+            for (i = 0; i < marks.length; i++) {
+                left = convertToPercent(marks[i]);
+                left_p = left + "%";
+                html += '<span id="Mark' + i + '"  class="showcase__mark" style="left: ' + left_p + '">';
+                html += marksName[i];
+                html += '</span>';
+            }
+
+            $slider.append(html);
+        }
+
+        function addLineToTrackbarFromCsharp(stepNumber) {
+            d8_instance.update({
+            });
+            marksName[stepNumber-1] = "Step" + (stepNumber);
+            marks[stepNumber-1] = stepNumber * 100;
+            addMarks(mySlider.slider);
+
+        }
     </script>
 
 
