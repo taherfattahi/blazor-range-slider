@@ -15,9 +15,7 @@ Build date: 2019-12-19 16:51:02
     font-size: 12px;
     font-family: Arial, sans-serif;
 }
-<<<<<<< HEAD
 
-=======
 .showcase__mark {
     display: block;
     position: absolute;
@@ -29,7 +27,7 @@ Build date: 2019-12-19 16:51:02
     color: #111;
     margin-left: -10px;
 }
->>>>>>> 09fa65ae971eb1177dbb6fb0f28130d16ee8ee39
+
 .mark {
     display: block;
     position: absolute;

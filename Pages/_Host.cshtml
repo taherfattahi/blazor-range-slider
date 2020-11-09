@@ -1,9 +1,7 @@
 ﻿@page "/"
 @namespace BlazorRangeSlider.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    Layout = null;
-}
+@{ Layout = null; }
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,22 +39,15 @@
 
 
     <script>
-
         let isTrackChange = true;
         let d9_instance;
-
         let d8_instance;
-
         var mySlider;
-
         var min = 0;
         var max = 1000;
         var marks = [100, 200];
         var marksName = ["step1", "step2"];
-
-
         window.initJsFunctionsFromCsharp = () => {
-
             var $d9 = $("#ionRangeSlider");
             $d9.ionRangeSlider({
                 skin: "sharp",
@@ -85,32 +76,21 @@
                 },
                 onChange: function (data) {
                     // Called every time handle position is changed
-
                     console.log(data.from);
                     DotNet.invokeMethodAsync('BlazorRangeSlider', 'onChange', data.from.toString());
-
                 },
-
                 onFinish: function (data) {
                     // Called then action is done and mouse is released
-
                     console.log(data.to);
                 },
-
                 onUpdate: function (data) {
                     // Called then slider is changed using Update public method
-
                     console.log(data.from_percent);
                 }
-
             });
-
             d9_instance = $d9.data("ionRangeSlider");
         }
-
-
         window.initJsFunctionsMarksFromCsharp = () => {
-
             var $d8 = $("#ionRangeSliderMarks");
             $d8.ionRangeSlider({
                 skin: "round",
@@ -118,7 +98,7 @@
                 min: 0,
                 max: 1000,
                 from: 0,
-                step: 1, 
+                step: 1,
                 hide_from_to: false,
                 hide_min_max: true,
                 onStart: function (data) {
@@ -141,39 +121,28 @@
                 },
                 onChange: function (data) {
                     // Called every time handle position is changed
-
                     console.log(data.from);
                     DotNet.invokeMethodAsync('BlazorRangeSlider', 'onChange', data.from.toString());
-
                 },
-
                 onFinish: function (data) {
                     // Called then action is done and mouse is released
-
                     console.log(data.to);
                 },
-
                 onUpdate: function (data) {
                     // Called then slider is changed using Update public method
-
                     console.log(data.from_percent);
                 }
-
             });
-
             d8_instance = $d8.data("ionRangeSlider");
         }
-
         function convertToPercent(num) {
             return (num - min) / (max - min) * 100;
         }
-
         function addMarks($slider) {
             var html = '';
             var left = 0;
             var left_p = "";
             var i;
-
             for (i = 0; i < marks.length; i++) {
                 left = convertToPercent(marks[i]);
                 left_p = left + "%";
@@ -181,17 +150,14 @@
                 html += marksName[i];
                 html += '</span>';
             }
-
             $slider.append(html);
         }
-
         function addLineToTrackbarFromCsharp(stepNumber) {
             d8_instance.update({
             });
-            marksName[stepNumber-1] = "Step" + (stepNumber);
-            marks[stepNumber-1] = stepNumber * 100;
+            marksName[stepNumber - 1] = "Step" + (stepNumber);
+            marks[stepNumber - 1] = stepNumber * 100;
             addMarks(mySlider.slider);
-
         }
     </script>
 
